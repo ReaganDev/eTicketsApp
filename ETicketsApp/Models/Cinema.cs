@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ETicketsApp.Models
 {
-    public class Cinema
+    public class Cinema : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
         [Display(Name = "Name")]
         public string Name { get; set; }
         [Display(Name = "Cinema Logo")]

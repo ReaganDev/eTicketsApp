@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ETicketsApp.Data.Repository;
 using ETicketsApp.Models;
 
 namespace ETicketsApp.Data.Interfaces
 {
-    public interface IActorsService
+    public interface IActorsService : IEntityRepository<Actor>
     {
-        Task<IEnumerable<Actor>> GetAllAsync();
-        Task<Actor> GetByIdAsync(int id);
-        Task Add(Actor actor);
-        Task<Actor> UpdateAsync(int id, Actor actor);
-        Task DeleteAsync(int id);
+
     }
 }
