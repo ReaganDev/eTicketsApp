@@ -9,7 +9,7 @@ namespace ETicketsApp.Data.Interfaces
         Task<IEnumerable<Actor>> GetAllAsync();
         Task<Actor> GetByIdAsync(int id);
         Task Add(Actor actor);
-        Actor Update(int id, Actor actor);
-        void Delete(int id);
+        Task<Actor> UpdateAsync(int id, Actor actor);
+        Task DeleteAsync(int id);
     }
 }

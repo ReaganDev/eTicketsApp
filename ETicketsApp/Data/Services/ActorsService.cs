@@ -21,9 +21,11 @@ namespace ETicketsApp.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var actor = await GetByIdAsync(id);
+            _context.Actors.Remove(actor);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Actor>> GetAllAsync()
@@ -38,9 +40,11 @@ namespace ETicketsApp.Data.Services
             return actor;
         }
 
-        public Actor Update(int id, Actor actor)
+        public async Task<Actor> UpdateAsync(int id, Actor actor)
         {
-            throw new System.NotImplementedException();
+            _context.Actors.Update(actor);
+            await _context.SaveChangesAsync();
+            return actor;
         }
     }
 }
