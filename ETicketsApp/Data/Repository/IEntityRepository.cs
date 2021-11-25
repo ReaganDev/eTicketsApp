@@ -7,7 +7,7 @@ namespace ETicketsApp.Data.Repository
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
-        Task Add(T model);
+        Task AddAsync(T model);
         Task UpdateAsync(int id, T model);
         Task DeleteAsync(int id);
     }

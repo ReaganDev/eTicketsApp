@@ -31,7 +31,7 @@ namespace ETicketsApp.Controllers
             {
                 return View(actor);
             }
-            await _service.Add(actor);
+            await _service.AddAsync(actor);
             return RedirectToAction(nameof(Index));
         }
 

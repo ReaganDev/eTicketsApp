@@ -14,7 +14,7 @@ namespace ETicketsApp.Data.Repository
         {
             _context = context;
         }
-        public async Task Add(T model)
+        public async Task AddAsync(T model)
         {
             await _context.Set<T>().AddAsync(model);
             await _context.SaveChangesAsync();
