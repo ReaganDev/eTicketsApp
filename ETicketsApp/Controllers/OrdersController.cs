@@ -1,4 +1,5 @@
-﻿using ETicketsApp.Data;
+﻿using System.Threading.Tasks;
+using ETicketsApp.Data;
 using ETicketsApp.Data.Interfaces;
 using ETicketsApp.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace ETicketsApp.Controllers
             _cart = cart;
             _service = service;
         }
-        public IActionResult Index()
+        public IActionResult ShoppingCart()
         {
             var items = _cart.GetItems();
             _cart.ShoppingCartItems = items;
@@ -25,6 +26,18 @@ namespace ETicketsApp.Controllers
                 Total = _cart.GetShoppingCartTotal()
             };
             return View(res);
+        }
+
+        public async Task<RedirectToActionResult> AddToCart(int id)
+        {
+            var item = await _service.GetMovieByIdAync(id);
+            if (item != null)
+            {
+                _cart.AddItemToCart(item);
+            }
+
+            return RedirectToAction(nameof(ShoppingCart));
+
         }
     }
 }

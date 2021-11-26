@@ -29,6 +29,7 @@ namespace ETicketsApp
         {
             services.AddDependencyInjection();
             services.AddDbContext<AppDbContext>(option => option.UseSqlite(Configuration.GetConnectionString("Default")));
+            services.AddSession();
             services.AddControllersWithViews();
         }
 
@@ -49,6 +50,7 @@ namespace ETicketsApp
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
