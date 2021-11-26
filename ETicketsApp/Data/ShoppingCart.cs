@@ -46,5 +46,22 @@ namespace ETicketsApp.Data
             _context.SaveChanges();
         }
 
+        public void RemoveItem(Movie movie)
+        {
+            var item = _context.ShoppingCartItems.FirstOrDefault(x => x.Movie.Id == movie.Id && x.ShoppingCartId == ShoppingCartId);
+            if (item != null)
+            {
+                if (item.Amount > 1)
+                {
+                    item.Amount--;
+                }
+                else
+                {
+                    _context.ShoppingCartItems.Remove(item);
+                }
+            }
+            _context.SaveChanges();
+        }
+
     }
 }
