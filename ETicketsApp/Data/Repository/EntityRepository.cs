@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -30,6 +33,12 @@ namespace ETicketsApp.Data.Repository
 
         public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().ToListAsync();
 
+        public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] props)
+        {
+            IQueryable<T> query = _context.Set<T>();
+            query = props.Aggregate(query, (current, includeProp) => current.Include(includeProp));
+            return await query.ToListAsync();
+        }
 
         public async Task<T> GetByIdAsync(int id) => await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
 
