@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ETicketsApp.Models
 {
@@ -8,6 +9,6 @@ namespace ETicketsApp.Models
         public int Id { get; set; }
         public string Email { get; set; }
         public string UserId { get; set; }
-        public int MyProperty { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
     }
 }

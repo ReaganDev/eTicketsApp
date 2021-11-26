@@ -9,6 +9,8 @@ namespace ETicketsApp.Models
         public int Amount { get; set; }
         public double Price { get; set; }
         public int MovieId { get; set; }
-        public virtual Movie Movie { get; set; }
+        public Movie Movie { get; set; }
+        public int OrderId { get; set; }
+        public Order Order { get; set; }
     }
 }
