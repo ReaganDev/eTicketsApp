@@ -57,5 +57,34 @@ namespace ETicketsApp.Controllers
             var res = new RegisterVM();
             return View(res);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                TempData["Error"] = "Email Address already in use";
+                return View(model);
+            }
+
+            var newUser = new AppUser()
+            {
+                Email = model.Email,
+                FullName = model.FullName,
+                UserName = model.Email
+            };
+            var newUserRes = await _userManager.CreateAsync(newUser, model.Password);
+            if (newUserRes.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(newUser, UserRole.User);
+            }
+
+            return View("RegistrationComplete");
+        }
     }
 }
