@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ETicketsApp.Data;
-using ETicketsApp.Data.Interfaces;
-using ETicketsApp.Data.Services;
+using ETicketsApp.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +25,14 @@ namespace ETicketsApp
         {
             services.AddDependencyInjection();
             services.AddDbContext<AppDbContext>(option => option.UseSqlite(Configuration.GetConnectionString("Default")));
+
+            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddMemoryCache();
             services.AddSession();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
             services.AddControllersWithViews();
         }
 
@@ -52,6 +55,9 @@ namespace ETicketsApp
             app.UseRouting();
             app.UseSession();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -61,6 +67,7 @@ namespace ETicketsApp
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
             AppDbInitializer.Seed(app);
+            AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
         }
     }
 }

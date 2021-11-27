@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ETicketsApp.Data.Enum;
 using ETicketsApp.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ETicketsApp.Data
@@ -321,6 +323,59 @@ namespace ETicketsApp.Data
                 }
             }
 
+        }
+
+        public static async Task SeedUsersAndRolesAsync(IApplicationBuilder builder)
+        {
+            using (var serviceScope = builder.ApplicationServices.CreateScope())
+            {
+                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                if (!await roleManager.RoleExistsAsync(UserRole.Admin))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(UserRole.Admin));
+                }
+
+                if (!await roleManager.RoleExistsAsync(UserRole.User))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(UserRole.User));
+                }
+
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+                var adminUser = await userManager.FindByEmailAsync("Admin@etickets.com");
+                if (adminUser == null)
+                {
+                    var newAdminUser = new AppUser()
+                    {
+                        FullName = "Admin",
+                        UserName = "Admin",
+                        Email = "Admin@etickets.com",
+                        EmailConfirmed = true
+                    };
+
+                    var a = await userManager.CreateAsync(newAdminUser, "Admin95%");
+                    if (a.Succeeded)
+                    {
+
+                    }
+                    await userManager.AddToRoleAsync(newAdminUser, UserRole.Admin);
+                }
+
+                var appUser = await userManager.FindByEmailAsync("Pearl@etickets.com");
+                if (appUser == null)
+                {
+                    var newAppUser = new AppUser()
+                    {
+                        FullName = "Peace Bassey",
+                        UserName = "Pearl95",
+                        Email = "Pearl@etickets.com",
+                        EmailConfirmed = true
+                    };
+
+                    await userManager.CreateAsync(newAppUser, "Pearl95%");
+                    await userManager.AddToRoleAsync(newAppUser, UserRole.User);
+                }
+            }
         }
     }
 }
