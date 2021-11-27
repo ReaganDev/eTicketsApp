@@ -1,4 +1,5 @@
 ﻿using ETicketsApp.Data;
+using ETicketsApp.Data.ViewModels;
 using ETicketsApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,10 @@ namespace ETicketsApp.Controllers
             _signinManager = signinManager;
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Login()
         {
-            return View();
+            var res = new LoginVM();
+            return View(res);
         }
     }
 }
