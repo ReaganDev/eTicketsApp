@@ -1,4 +1,5 @@
-﻿using ETicketsApp.Data;
+﻿using System.Threading.Tasks;
+using ETicketsApp.Data;
 using ETicketsApp.Data.ViewModels;
 using ETicketsApp.Models;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,33 @@ namespace ETicketsApp.Controllers
         {
             var res = new LoginVM();
             return View(res);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                var passwordCheck = await _userManager.CheckPasswordAsync(user, model.Password);
+                if (passwordCheck)
+                {
+                    var result = await _signinManager.PasswordSignInAsync(user, model.Password, false, false);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Movies");
+                    }
+                }
+                TempData["Error"] = "Wrong Credentials. Please Try again";
+                return View(model);
+            }
+
+            TempData["Error"] = "Wrong Credentials. Please Try again";
+            return View(model);
         }
     }
 }
