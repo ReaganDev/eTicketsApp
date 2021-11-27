@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using ETicketsApp.Data;
 using ETicketsApp.Data.Interfaces;
 using ETicketsApp.Data.ViewModels;
@@ -21,8 +22,9 @@ namespace ETicketsApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userId = "";
-            var orders = await _orders.GetOrdersByIdAsync(userId);
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var orders = await _orders.GetOrdersByIdAndRoleAsync(userId, userRole);
             return View(orders);
         }
         public IActionResult ShoppingCart()
@@ -64,8 +66,8 @@ namespace ETicketsApp.Controllers
         public async Task<IActionResult> CompleteOrder()
         {
             var items = _cart.GetItems();
-            var user = "";
-            var email = "";
+            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var email = User.FindFirstValue(ClaimTypes.Email);
 
             await _orders.StoreOrderAsync(items, user, email);
             await _cart.ClearCartAsync();

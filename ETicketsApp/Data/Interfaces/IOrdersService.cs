@@ -7,7 +7,7 @@ namespace ETicketsApp.Data.Interfaces
     public interface IOrdersService
     {
         Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string email);
-        Task<List<Order>> GetOrdersByIdAsync(string userId);
+        Task<List<Order>> GetOrdersByIdAndRoleAsync(string userId, string userRole);
 
     }
 }

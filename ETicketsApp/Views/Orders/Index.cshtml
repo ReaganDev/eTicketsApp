@@ -15,7 +15,11 @@
 					<th>OrderId</th>
 					<th>Items</th>
 					<th>Total</th>
-					<th>User</th>
+					@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+					{
+						<th>User</th>
+
+					}
 				</tr>
 			</thead>
 			<tbody>
@@ -25,19 +29,23 @@
 						<td class="align-middle">@item.Id</td>
 						<td class="align-middle">
 							<ul style="list-style : none">
-								@foreach (var  order in item.OrderItems)
-							   {
-								   <li>
-									   <div class="alert-info">
-										   <span class="badge bg-success">@order.Amount</span>
-										   [@order.Price.ToString("c")] - @order.Movie.Name
-									   </div>
-								   </li>
-							   }
+								@foreach (var order in item.OrderItems)
+								{
+									<li>
+										<div class="alert-info">
+											<span class="badge bg-success">@order.Amount</span>
+											[@order.Price.ToString("c")] - @order.Movie.Name
+										</div>
+									</li>
+								}
 							</ul>
 						</td>
 						<td class="align-middle">@item.OrderItems.Select(m => m.Movie.Price * m.Amount).Sum().ToString("c")</td>
-						<td class="align-middle">N/A</td>
+						@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+						{
+							<td class="align-middle">@item.User.FullName</td>
+
+						}
 					</tr>
 				}
 			</tbody>

@@ -14,9 +14,13 @@ namespace ETicketsApp.Data.Services
         {
             _context = context;
         }
-        public async Task<List<Order>> GetOrdersByIdAsync(string userId)
+        public async Task<List<Order>> GetOrdersByIdAndRoleAsync(string userId, string userRole)
         {
-            var orders = await _context.Orders.Include(x => x.OrderItems).ThenInclude(x => x.Movie).Where(x => x.UserId == userId).ToListAsync();
+            var orders = await _context.Orders.Include(x => x.OrderItems).ThenInclude(x => x.Movie).Include(x => x.User).ToListAsync();
+            if (userRole != "Admin")
+            {
+                orders = orders.Where(x => x.UserId == userId).ToList();
+            }
 
             return orders;
         }
