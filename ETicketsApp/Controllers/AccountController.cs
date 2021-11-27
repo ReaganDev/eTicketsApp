@@ -86,5 +86,12 @@ namespace ETicketsApp.Controllers
 
             return View("RegistrationComplete");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signinManager.SignOutAsync();
+            return RedirectToAction("Index", "Movies");
+        }
     }
 }

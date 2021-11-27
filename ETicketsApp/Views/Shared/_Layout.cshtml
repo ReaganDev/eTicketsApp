@@ -51,6 +51,7 @@
 					<a class="btn btn-outline-primary my-2 my-sm-0" asp-controller="Account" asp-action="Register">
 						<i class="bi bi-person-plus"></i>Register
 					</a>
+					<span style="padding : 5px"></span>
 
 					@*USER PROFILE SECTION*@
 					<div class="dropdown">
@@ -64,6 +65,11 @@
 							</li>
 						</ul>
 					</div>
+
+					<span style="padding : 5px"></span>
+					<form asp-controller="Account" asp-action="Logout">
+						<button class="btn btn-outline-danger my-2 my-sm-0"><i class="bi bi-box-arrow-in-right"></i>Logout</button>
+					</form>
 				</div>
 			</div>
 		</nav>
