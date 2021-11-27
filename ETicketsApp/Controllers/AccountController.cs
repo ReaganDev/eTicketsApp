@@ -51,5 +51,11 @@ namespace ETicketsApp.Controllers
             TempData["Error"] = "Wrong Credentials. Please Try again";
             return View(model);
         }
+
+        public IActionResult Register()
+        {
+            var res = new RegisterVM();
+            return View(res);
+        }
     }
 }
