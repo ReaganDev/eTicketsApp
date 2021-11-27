@@ -31,7 +31,7 @@ namespace ETicketsApp.Data
 
         public List<ShoppingCartItem> GetItems()
         {
-            return ShoppingCartItems ?? (ShoppingCartItems = _context.ShoppingCartItems.Where(x => x.ShoppingCartId == ShoppingCartId).Include(x => x.Movie).ToList());
+            return ShoppingCartItems ??= _context.ShoppingCartItems.Where(x => x.ShoppingCartId == ShoppingCartId).Include(x => x.Movie).ToList();
         }
 
         public double GetShoppingCartTotal()

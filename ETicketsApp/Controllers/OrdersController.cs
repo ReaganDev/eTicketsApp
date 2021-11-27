@@ -39,5 +39,17 @@ namespace ETicketsApp.Controllers
             return RedirectToAction(nameof(ShoppingCart));
 
         }
+
+        public async Task<RedirectToActionResult> RemoveFromCart(int id)
+        {
+            var item = await _service.GetMovieByIdAync(id);
+            if (item != null)
+            {
+                _cart.RemoveItem(item);
+            }
+
+            return RedirectToAction(nameof(ShoppingCart));
+
+        }
     }
 }
